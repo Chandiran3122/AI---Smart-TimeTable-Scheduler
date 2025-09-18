@@ -846,7 +846,7 @@
                         <th class="p-3 border bg-gray-100 font-semibold">Period 6</th>
                         <th class="p-2 border bg-green-100 font-semibold text-green-800 text-xs">Break<br>3:05-3:25pm</th>
                         <th class="p-3 border bg-gray-100 font-semibold">Period 7</th>
-                        <th class="p-3 border bg-gray-100 font-semibold">Period 8</th>
+                        
                     </tr>
                 </thead>
             <tbody>`;
@@ -1391,3 +1391,4 @@
                 }
             }
         }
+
