@@ -1,4 +1,4 @@
- // --- GENETIC ALGORITHM ---
+        // --- GENETIC ALGORITHM ---
         const GA_CONSTANTS = {
             POPULATION_SIZE: 30,
             MAX_GENERATIONS: 50,
@@ -64,4 +64,69 @@
             saveState();
             renderTimetable(deptId, yearId, sectionId);
             setTimeout(() => generationStatus.textContent = '', 4000);
+        }
+
+        // Creates a population of random timetables
+        function GA_createInitialPopulation(deptId, size) {
+            let population = [];
+            for (let i = 0; i < size; i++) {
+                population.push(GA_createRandomTimetable(deptId));
+            }
+            return population;
+        }
+
+        // Creates one random timetable
+        function GA_createRandomTimetable(deptId) {
+            const deptData = MOCK_DB[deptId];
+            const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const periods = 8;
+            const newTimetable = {};
+
+            days.forEach(day => {
+                newTimetable[day] = [];
+                for (let i = 0; i < periods; i++) {
+                    const course = deptData.courses[Math.floor(Math.random() * deptData.courses.length)];
+                    const faculty = deptData.faculty[Math.floor(Math.random() * deptData.faculty.length)];
+                    const room = deptData.rooms.find(r => r.type === course.type) || deptData.rooms[0];
+                    newTimetable[day].push({ course: course.name, faculty: faculty.name, room: room.name });
+                }
+            });
+            return newTimetable;
+        }
+
+        // Fitness function: The core of the GA. Higher score is better.
+        function GA_calculateFitness(timetable, deptId) {
+            let fitness = 10000;
+            const facultySchedule = {};
+            const roomSchedule = {};
+
+            Object.entries(timetable).forEach(([day, slots]) => {
+                slots.forEach((slot, period) => {
+                    if (slot) {
+                        const timeSlotId = `${day}-${period}`;
+                        
+                        // Hard Constraint: No faculty clashes
+                        if (!facultySchedule[slot.faculty]) facultySchedule[slot.faculty] = new Set();
+                        if (facultySchedule[slot.faculty].has(timeSlotId)) {
+                            fitness -= GA_CONSTANTS.HARD_CONSTRAINT_PENALTY;
+                        }
+                        facultySchedule[slot.faculty].add(timeSlotId);
+
+                        // Hard Constraint: No room clashes
+                        if (!roomSchedule[slot.room]) roomSchedule[slot.room] = new Set();
+                        if (roomSchedule[slot.room].has(timeSlotId)) {
+                            fitness -= GA_CONSTANTS.HARD_CONSTRAINT_PENALTY;
+                        }
+                        roomSchedule[slot.room].add(timeSlotId);
+
+                        // Soft Constraint: Penalize labs not in lab rooms
+                        const courseInfo = MOCK_DB[deptId].courses.find(c => c.name === slot.course);
+                        const roomInfo = MOCK_DB[deptId].rooms.find(r => r.name === slot.room);
+                        if(courseInfo && roomInfo && courseInfo.type === 'Lab' && roomInfo.type !== 'Lab') {
+                            fitness -= 50;
+                        }
+                    }
+                });
+            });
+            return fitness;
         }
