@@ -4,6 +4,7 @@
         let currentUser = null; // Simulated auth user object
         let userData = null;    // Detailed user profile from our mock DB
         let clockInterval = null;
+        let presentFacultyToday = new Set();
         
         // --- UI Elements ---
         const loginScreen = document.getElementById('login-screen');
@@ -42,7 +43,7 @@
             localStorage.setItem('smartScheduler_Users', JSON.stringify(MOCK_USERS));
         }
 
-        function loadState() {
+         function loadState() {
             // Default data to populate if localStorage is empty
             const defaultUsers = {
                 'admin@admin.com': { uid: 'admin_user', name: 'Admin User', role: 'Administrator', departmentId: 'admin_dept' },
@@ -507,8 +508,30 @@
             });
         }
         
+        function renderPresentFacultyList() {
+            const listContainer = document.getElementById('present-faculty-list');
+            if (!listContainer) return;
+
+            if (presentFacultyToday.size === 0) {
+                listContainer.innerHTML = `<p class="text-gray-500 text-center py-5">No faculty have marked attendance yet today.</p>`;
+            } else {
+                let listHtml = '';
+                presentFacultyToday.forEach(facultyName => {
+                    listHtml += `
+                        <div class="flex items-center gap-3 bg-green-50 p-3 rounded-lg">
+                            <i data-lucide="user-check" class="text-green-600"></i>
+                            <span class="text-green-800 font-semibold">${facultyName}</span>
+                        </div>
+                    `;
+                });
+                listContainer.innerHTML = listHtml;
+                lucide.createIcons();
+            }
+        }
+
         function renderFacultyDashboard() {
             facultyDashboard.classList.remove('hidden');
+            renderPresentFacultyList();
             const dailyScheduleContainer = document.getElementById('daily-schedule');
             
             const facultyName = userData.name;
@@ -708,7 +731,7 @@
         function GA_createRandomTimetable(deptId) {
             const deptData = MOCK_DB[deptId];
             const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            const periods = 7;
+            const periods = 8;
             const newTimetable = {};
 
             days.forEach(day => {
@@ -846,7 +869,6 @@
                         <th class="p-3 border bg-gray-100 font-semibold">Period 6</th>
                         <th class="p-2 border bg-green-100 font-semibold text-green-800 text-xs">Break<br>3:05-3:25pm</th>
                         <th class="p-3 border bg-gray-100 font-semibold">Period 7</th>
-                        
                     </tr>
                 </thead>
             <tbody>`;
@@ -884,7 +906,6 @@
                 tableHtml += renderSlot(5); // Period 6
                  tableHtml += `<td class="p-2 border bg-green-100 align-middle text-xs text-green-700 font-semibold">B<br>R<br>E<br>A<br>K</td>`; // Break 2
                 tableHtml += renderSlot(6); // Period 7
-                
 
                 tableHtml += `</tr>`;
             });
@@ -1107,6 +1128,10 @@
                     timetableSlot.attendanceSubmitted = true;
                     saveState();
                 }
+
+                // Add current faculty to the present list and re-render
+                presentFacultyToday.add(userData.name);
+                renderPresentFacultyList();
 
                 attendanceModalContainer.classList.add('hidden');
                 
@@ -1391,4 +1416,3 @@
                 }
             }
         }
-
