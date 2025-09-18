@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Timetable Scheduler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+    <!-- App Container -->
+    <div id="app-container" class="min-h-screen">
+
+        <!-- Login Screen -->
+        <div id="login-screen" class="flex items-center justify-center min-h-screen bg-gray-100">
+            <div class="auth-card w-full max-w-md mx-4">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Smart Scheduler</h1>
+                    <p class="text-gray-500 mt-2">Please sign in to continue</p>
+                </div>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="email" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl" placeholder="••••••••">
+                    </div>
+                    <div>
+                        <label for="role-select" class="block text-sm font-medium text-gray-700">Your Role</label>
+                        <select id="role-select" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl appearance-none bg-white">
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="HOD">HOD</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Student">Student</option>
+                        </select>
+                    </div>
+                    <div id="login-department-wrapper" class="hidden">
+                        <label for="department-select" class="block text-sm font-medium text-gray-700">Department</label>
+                        <select id="department-select" class="form-input mt-1 block w-full px-4 py-3 rounded-xl appearance-none bg-white">
+                            <!-- Options will be populated by script -->
+                        </select>
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" class="btn-primary w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transform hover:scale-105 flex justify-center items-center">
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+                <p id="login-error" class="text-red-500 text-sm mt-4 text-center h-5"></p>
+                <div class="text-xs text-gray-400 mt-6 text-center space-y-1">
+                </div>
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    Don't have an account? <a href="#" id="show-register-link" class="font-semibold text-primary-color hover:underline">Sign Up</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Registration Screen -->
+        <div id="register-screen" class="hidden flex items-center justify-center min-h-screen bg-gray-100 py-12">
+             <div class="auth-card w-full max-w-md mx-4">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Create Account</h1>
+                    <p class="text-gray-500 mt-2">Join the Smart Scheduler platform</p>
+                </div>
+                <form id="register-form" class="space-y-4">
+                    <div>
+                        <label for="register-name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="register-name" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="register-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="register-email" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl" placeholder="your.email@example.com">
+                    </div>
+                     <div>
+                        <label for="register-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="register-password" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl" placeholder="••••••••">
+                    </div>
+                    <div>
+                        <label for="register-role-select" class="block text-sm font-medium text-gray-700">Your Role</label>
+                        <select id="register-role-select" required class="form-input mt-1 block w-full px-4 py-3 rounded-xl appearance-none bg-white">
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="HOD">HOD</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Student">Student</option>
+                        </select>
+                    </div>
+                    <div id="register-department-wrapper" class="hidden">
+                        <label for="register-department-select" class="block text-sm font-medium text-gray-700">Department</label>
+                        <select id="register-department-select" class="form-input mt-1 block w-full px-4 py-3 rounded-xl appearance-none bg-white">
+                            <!-- Options will be populated by script -->
+                        </select>
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" class="btn-primary w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transform hover:scale-105 flex justify-center items-center">
+                            Sign Up
+                        </button>
+                    </div>
+                </form>
+                <p id="register-error" class="text-red-500 text-sm mt-4 text-center h-5"></p>
+                 <p class="text-center text-sm text-gray-600 mt-4">
+                    Already have an account? <a href="#" id="show-login-link" class="font-semibold text-primary-color hover:underline">Sign In</a>
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-screen" class="hidden">
+            <header class="bg-white shadow-md">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center py-4">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="calendar-days" class="text-primary-color"></i>
+                            <h1 class="text-xl font-bold text-gray-800">Smart Scheduler Dashboard</h1>
+                        </div>
+                        <div class="flex items-center gap-6">
+                             <div id="clock" class="text-right">
+                                <p class="font-semibold text-gray-700 text-sm" id="time-display"></p>
+                                <p class="text-xs text-gray-500" id="date-display"></p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div>
+                                    <p class="font-semibold text-gray-700" id="user-name">Welcome, User!</p>
+                                    <p class="text-sm text-gray-500" id="user-role-dept">Role | Department</p>
+                                </div>
+                                <button id="logout-btn" class="flex items-center gap-2 text-red-500 hover:text-red-700 font-semibold py-2 px-3 rounded-lg hover:bg-red-50 transition-colors">
+                                    <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+                <!-- Section Selector Hub -->
+                <div id="section-selector-hub" class="hidden bg-white p-6 rounded-2xl shadow-lg text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4" id="hub-title">Management Hub</h2>
+                    <div id="hub-selectors" class="flex flex-wrap justify-center items-center gap-4">
+                        <!-- Selectors will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Admin and HOD Controls -->
+                <div id="admin-hod-controls" class="hidden space-y-4">
+                    <!-- Data Management Collapsible -->
+                    <div class="bg-white rounded-2xl shadow-lg">
+                        <button id="toggle-data-management" class="w-full flex justify-between items-center p-6 text-left">
+                            <h2 class="text-xl font-bold text-gray-800">Data Management</h2>
+                            <i data-lucide="chevron-down" class="transform transition-transform collapsible-icon"></i>
+                        </button>
+                        <div id="data-management-content" class="collapsible-content">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 pt-0">
+                                <div id="courses-panel"></div>
+                                <div id="faculty-panel"></div>
+                                <div id="rooms-panel"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generation Control Collapsible -->
+                     <div class="bg-white rounded-2xl shadow-lg">
+                        <button id="toggle-generation-tools" class="w-full flex justify-between items-center p-6 text-left">
+                            <h2 class="text-xl font-bold text-gray-800">Timetable Generation Tools</h2>
+                             <i data-lucide="chevron-down" class="transform transition-transform collapsible-icon"></i>
+                        </button>
+                        <div id="generation-tools-content" class="collapsible-content">
+                            <div class="p-6 pt-0 text-center">
+                                 <div class="flex justify-center gap-4">
+                                     <button id="generate-btn" class="bg-green-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105 flex items-center gap-2 mx-auto">
+                                        <i data-lucide="brain-circuit"></i>
+                                        Generate New
+                                    </button>
+                                    <button id="upload-timetable-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105 flex items-center gap-2 mx-auto">
+                                        <i data-lucide="upload-cloud"></i>
+                                        Upload Image
+                                    </button>
+                                 </div>
+                                <div id="generation-status" class="mt-4 text-indigo-600 h-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Faculty Controls -->
+                <div id="faculty-dashboard" class="hidden space-y-8">
+                     <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">My Daily Schedule & Attendance</h2>
+                        <div id="daily-schedule" class="space-y-3">
+                            <p class="text-gray-500 text-center py-5">Loading schedule...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timetable Display -->
+                <div id="timetable-container" class="hidden mt-8 bg-white p-4 sm:p-6 rounded-2xl shadow-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800" id="timetable-title">Department Timetable</h2>
+                        <button id="analyze-timetable-btn" class="hidden btn-secondary text-white font-bold py-2 px-5 rounded-xl shadow-lg hover:bg-amber-600 transition-transform transform hover:scale-105 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i> Analyze Timetable
+                        </button>
+                    </div>
+                    <div id="timetable-output" class="overflow-x-auto">
+                        <p class="text-gray-500 text-center py-10">Select a department, year, and section to view the timetable.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Modals -->
+        <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-backdrop"></div>
+        <div id="ai-suggestion-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-backdrop"></div>
+        <div id="ai-analysis-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-backdrop"></div>
+        <div id="upload-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-backdrop"></div>
+        <div id="attendance-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-backdrop"></div>
+
+
+        <!-- AI Chat Widget -->
+        <div id="ai-chat-widget" class="fixed bottom-5 right-5 w-80 bg-slate-50 rounded-2xl shadow-2xl transform translate-y-[calc(100%+20px)] opacity-0 z-40">
+            <div class="flex justify-between items-center p-4 bg-primary-color text-white rounded-t-2xl">
+                <h3 class="font-bold">AI Support Assistant</h3>
+                <button id="close-chat-btn" class="p-1 hover:bg-white/20 rounded-full cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="h-80 p-4 overflow-y-auto space-y-4 bg-slate-100">
+                <div class="flex justify-start">
+                    <div class="chat-bubble bg-white text-gray-800 p-3 rounded-xl rounded-bl-none shadow-sm">
+                        Hello! How can I help you navigate the Smart Scheduler?
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t bg-slate-50 rounded-b-2xl">
+                <form id="chat-form" class="flex gap-2">
+                    <input type="text" id="chat-input" class="flex-1 form-input px-4 py-2 rounded-xl bg-white" placeholder="Ask a question...">
+                    <button type="submit" class="btn-primary text-white p-3 rounded-xl"><i data-lucide="send"></i></button>
+                </form>
+            </div>
+        </div>
+        <button id="open-chat-btn" class="fixed bottom-5 right-5 bg-primary-color text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-110 z-40">
+            <i data-lucide="bot"></i>
+        </button>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

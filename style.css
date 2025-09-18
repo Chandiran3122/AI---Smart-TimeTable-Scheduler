@@ -1,0 +1,71 @@
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #f59e0b;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .auth-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease-in-out;
+        }
+        .form-input {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #d1d5db;
+        }
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+            outline: none;
+        }
+        .form-input:disabled {
+            background-color: #e5e7eb;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #d97706;
+        }
+        .timetable-cell {
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+        .timetable-cell .edit-btn {
+            display: none;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+        .timetable-cell:hover .edit-btn {
+            display: block;
+        }
+        #ai-chat-widget {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .chat-bubble {
+            max-width: 80%;
+        }
+        .modal-backdrop {
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+        .collapsible-content {
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+            overflow: hidden;
+            max-height: 0;
+        }
